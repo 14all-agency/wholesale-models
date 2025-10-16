@@ -30,6 +30,7 @@ export const PriceListResult = z.object({
   updatedAt: z.date().nullable().optional().describe("When the settings were last changed"),
   customerTag: z.string().nullable().optional().describe("Tag for this pricelist"),
   priceRules: z.array(PriceRuleResult).nullable().optional(),
+  priority: z.number().nullable().optional().describe("The highest priority number is picked first if multiple discounts applicable")
 });
 
 export type PriceListResultEntity = z.infer<typeof PriceListResult>;
@@ -45,6 +46,7 @@ export const PriceListModelSchema = z.object({
   updatedAt: PriceListResult.shape.updatedAt,
   customerTag: PriceListResult.shape.customerTag,
   priceRules: PriceListResult.shape.priceRules,
+  priority: PriceListResult.shape.priority,
 });
 
 export type PriceListModel = z.infer<typeof PriceListModelSchema>;
@@ -60,6 +62,7 @@ export const PriceListModel = {
       ...entity.updatedAt && { updatedAt: new Date(entity.updatedAt || new Date()) },
       customerTag: entity.customerTag || "",
       priceRules: entity.priceRules || [],
+      priority: entity.priority || 0,
     };
     return PriceListModelSchema.parse(obj);
   },
