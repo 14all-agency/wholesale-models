@@ -16,55 +16,11 @@ export const ShopifyStatusResult = z.union([
   z.literal("ERROR"),
 ]).optional().nullable();
 
-export const LlmsSettingsResult = z.object({
-  // Detail overrides
-  storeName: z.string().nullable().optional().describe("User can override default"),
-  storeDescription: z.string().nullable().optional().describe("User can override default"),
-  storeEmail: z.string().nullable().optional().describe("User can override default"),
-  storePhone: z.string().nullable().optional().describe("User can override default"),
-  storeAddress: z.string().nullable().optional().describe("User can override default"),
-  // Custom stuff
-  customIntro: z.string().nullable().optional().describe("Intro"),
-  customFooter: z.string().nullable().optional().describe("Footer"),
-  customSections: z.string().nullable().optional().describe("multiline sections at bottom"),
-  // Page inclusions
-  includeBlogs: z.boolean().nullable().optional().describe("Whether to include blogs and articles"),
-  includePages: z.boolean().nullable().optional().describe("Whether to include pages"),
-  includeProducts: z.boolean().nullable().optional().describe("Whether to include products"),
-  includeCollections: z.boolean().nullable().optional().describe("Whether to include collections"),
-  // Policy Toggles
-  includePrivacyPolicy: z.boolean().nullable().optional().describe("Whether to include privacy policy"),
-  includeRefundPolicy: z.boolean().nullable().optional().describe("Whether to include refund policy"),
-  includeShippingPolicy: z.boolean().nullable().optional().describe("Whether to include shipping policy"),
-  includeTermsPolicy: z.boolean().nullable().optional().describe("Whether to include terms of service policy"),
-  includeContactPolicy: z.boolean().nullable().optional().describe("Whether to include contact details policy link"),
-  // Toggles
-  includeContactDetails: z.boolean().nullable().optional().describe("Whether to include phone, email, etc"),
-  includeStoreDetails: z.boolean().nullable().optional().describe("Whether to show store timezone, currency, locale, and created date"),
-  includeProductPricing: z.boolean().nullable().optional().describe("Whether to show product pricing"),
-  includeCollectionMetadata: z.boolean().nullable().optional().describe("Whether to show collection total products"),
-  includeProductMetadata: z.boolean().nullable().optional().describe("Whether to show product page vendor, type, availability, tags, variants, images"),
-  includeBlogMetadata: z.boolean().nullable().optional().describe("Whether to show blog tags, author, total blog posts"),
-  excludeOutOfStockProducts: z.boolean().nullable().optional().describe("Whether to exclude out of stock products from file"),
-  // Indexing Settings
-  indexChatGpt: z.boolean().nullable().optional().describe("Whether to submit our links to chatgpt"),
-  indexGemini: z.boolean().nullable().optional().describe("Whether to submit our links to gemini"),
-  indexPerplexity: z.boolean().nullable().optional().describe("Whether to submit our links to perplexity"),
-  indexGrok: z.boolean().nullable().optional().describe("Whether to submit our links to grok"),
-  indexCopilot: z.boolean().nullable().optional().describe("Whether to submit our links to copilot"),
-  indexSearchEngines: z.boolean().nullable().optional().describe("Whether to submit our links to search engines"),
-  // Advanced Settings
-  includeGenerationTimestamp: z.boolean().nullable().optional().describe("Whether to show when was last generated/updated"),
-  includeSitemap: z.boolean().nullable().optional().describe("Whether to link sitemap"),
-  includeRobotsTxt: z.boolean().nullable().optional().describe("Whether to link robots.txt"),
-  includePageTimestamp: z.boolean().nullable().optional().describe("Whether to show when a page was last updated"),
-  includeSEO: z.boolean().nullable().optional().describe("Whether to show seo titles and descriptions"),
-  urlExclusions: z.string().nullable().optional().describe("multiline or comma-seperated list of urls to exclude e.g. products"),
-  marketsEnabled: z.boolean().nullable().optional().describe("Whether to have market specific LLMS.txt files"),
-  githubEnabled: z.boolean().nullable().optional().describe("Whether to sync to github"),
+export const WholesaleSettingsResult = z.object({
+  // todo
 }).optional().nullable().describe("Null infers not onboarded/saved");
 
-export type LlmsSettings = z.infer<typeof LlmsSettingsResult>;
+export type WholesaleSettings = z.infer<typeof WholesaleSettingsResult>;
 
 export const OrganisationResult = z.object({
   _id: z.instanceof(ObjectId),
@@ -86,7 +42,7 @@ export const OrganisationResult = z.object({
   timezone: z.string().optional().nullable().describe("shop timezone"),
   shopCreatedAt: z.string().optional().nullable().describe("shop created at"),
   // Custom
-  llmsSettings: LlmsSettingsResult,
+  wholesaleSettings: WholesaleSettingsResult,
   // Billing stuff
   billingPlanStatus: z.union([
     z.literal("INACTIVE"),
@@ -120,7 +76,7 @@ export const OrganisationModelSchema = z.object({
   settingsLastSynced: OrganisationResult.shape.settingsLastSynced,
   shopifySite: z.string().nullable().optional(),
   // custom
-  llmsSettings: OrganisationResult.shape.llmsSettings,
+  wholesaleSettings: OrganisationResult.shape.wholesaleSettings,
   // billing
   billingPlanStatus: OrganisationResult.shape.billingPlanStatus,
   billingSubscriptionId: OrganisationResult.shape.billingSubscriptionId,
@@ -157,7 +113,7 @@ export const OrganisationModel = {
       shopifyConnectionStatus: entity.shopifyConnectionStatus || "INACTIVE",
       shopifySite: entity?.shopifyConnection?.domain || null,
       // custom
-      llmsSettings: entity.llmsSettings || null,
+      wholesaleSettings: entity.wholesaleSettings || null,
       // billing
       billingPlanStatus: entity.billingPlanStatus || "INACTIVE",
       billingSubscriptionId: entity.billingSubscriptionId || null,
