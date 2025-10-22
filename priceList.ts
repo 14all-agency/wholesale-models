@@ -3,13 +3,14 @@ import { z } from "zod";
 import { OrganisationModel, OrganisationModelSchema, OrganisationResult } from './Organisation';
 
 export const PriceRuleResult = z.object({
-  _id: z.instanceof(ObjectId),
   context: z.union([
     z.literal("STORE"),
     z.literal("PRODUCT"),
     z.literal("COLLECTION"),
   ]).describe("The type of object this price rule applies to"),
   contextId: z.string().nullable().optional().describe("The applying collection/product id (empty for store)"),
+  contextTitle: z.string().nullable().optional().describe("The contextual title"),
+  contextImage: z.string().nullable().optional().describe("The contextual image"),
   priceType: z.union([
     z.literal("SET_PRICE"),
     z.literal("PERCENTAGE"),
@@ -30,7 +31,8 @@ export const PriceListResult = z.object({
   updatedAt: z.date().nullable().optional().describe("When the settings were last changed"),
   customerTag: z.string().nullable().optional().describe("Tag for this pricelist"),
   priceRules: z.array(PriceRuleResult).nullable().optional(),
-  priority: z.number().nullable().optional().describe("The highest priority number is picked first if multiple discounts applicable")
+  priority: z.number().nullable().optional().describe("The highest priority number is picked first if multiple discounts applicable"),
+  enabled: z.boolean().nullable().optional().describe("Whether this price list is enabled or not"),
 });
 
 export type PriceListResultEntity = z.infer<typeof PriceListResult>;
@@ -47,6 +49,7 @@ export const PriceListModelSchema = z.object({
   customerTag: PriceListResult.shape.customerTag,
   priceRules: PriceListResult.shape.priceRules,
   priority: PriceListResult.shape.priority,
+  enabled: PriceListResult.shape.enabled,
 });
 
 export type PriceListModel = z.infer<typeof PriceListModelSchema>;
@@ -63,6 +66,7 @@ export const PriceListModel = {
       customerTag: entity.customerTag || "",
       priceRules: entity.priceRules || [],
       priority: entity.priority || 0,
+      enabled: entity.enabled || false,
     };
     return PriceListModelSchema.parse(obj);
   },
