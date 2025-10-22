@@ -12,11 +12,11 @@ export const PriceRuleResult = z.object({
   contextId: z.string().nullable().optional().describe("The applying collection/product id (empty for store)"),
   contextTitle: z.string().nullable().optional().describe("The contextual title"),
   contextImage: z.string().nullable().optional().describe("The contextual image"),
-  priceType: z.union([
+  discountMethod: z.union([
     z.literal("SET_PRICE"),
     z.literal("PERCENTAGE"),
   ]).describe("The type of price/discount"),
-  amount: z.number().nullable().optional().describe("The set price value or percentage discount (e.g. 0.3 for 30%)")
+  discountAmount: z.number().nullable().optional().describe("The set price value or percentage discount (e.g. 0.3 for 30%)")
 });
 
 export type PriceRule = z.infer<typeof PriceRuleResult>;
