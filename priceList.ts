@@ -6,6 +6,7 @@ export const PriceRuleResult = z.object({
   context: z.union([
     z.literal("STORE"),
     z.literal("PRODUCT"),
+    z.literal("VARIANT"),
     z.literal("COLLECTION"),
   ]).describe("The type of object this price rule applies to"),
   contextId: z.string().nullable().optional().describe("The applying collection/product id (empty for store)"),
