@@ -30,6 +30,17 @@ export const PriceListInputResult = z.object({
 
 export type PriceListInput = z.infer<typeof PriceListInputResult>;
 
+export const PriceListPayloadResult = z.object({
+  id: z.string().nullable().optional(),
+  org: z.string().nullable().optional(),
+  domain: z.string().nullable().optional().describe("The website domain (for faster access)"),
+  createdAt: z.date().nullable().optional(),
+  updatedAt: z.date().nullable().optional().describe("When the settings were last changed"),
+  ...PriceListInputResult.shape,
+});
+
+export type PriceListPayload = z.infer<typeof PriceListPayloadResult>;
+
 export const PriceListResult = z.object({
   _id: z.instanceof(ObjectId),
   org: z.union([
