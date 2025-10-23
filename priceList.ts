@@ -21,6 +21,15 @@ export const PriceRuleResult = z.object({
 
 export type PriceRule = z.infer<typeof PriceRuleResult>;
 
+export const PriceListInputResult = z.object({
+  customerTag: z.string().nullable().optional().describe("Tag for this pricelist"),
+  priceRules: z.array(PriceRuleResult).nullable().optional(),
+  priority: z.number().nullable().optional().describe("The highest priority number is picked first if multiple discounts applicable"),
+  enabled: z.boolean().nullable().optional().describe("Whether this price list is enabled or not"),
+});
+
+export type PriceListInput = z.infer<typeof PriceListInputResult>;
+
 export const PriceListResult = z.object({
   _id: z.instanceof(ObjectId),
   org: z.union([
@@ -30,10 +39,7 @@ export const PriceListResult = z.object({
   domain: z.string().nullable().optional().describe("The website domain (for faster access)"),
   createdAt: z.date().nullable().optional(),
   updatedAt: z.date().nullable().optional().describe("When the settings were last changed"),
-  customerTag: z.string().nullable().optional().describe("Tag for this pricelist"),
-  priceRules: z.array(PriceRuleResult).nullable().optional(),
-  priority: z.number().nullable().optional().describe("The highest priority number is picked first if multiple discounts applicable"),
-  enabled: z.boolean().nullable().optional().describe("Whether this price list is enabled or not"),
+  ...PriceListInputResult.shape,
 });
 
 export type PriceListResultEntity = z.infer<typeof PriceListResult>;
