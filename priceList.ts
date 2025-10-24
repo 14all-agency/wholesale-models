@@ -22,6 +22,7 @@ export const PriceRuleResult = z.object({
 export type PriceRule = z.infer<typeof PriceRuleResult>;
 
 export const PriceListInputResult = z.object({
+  name: z.string().nullable().optional().describe("Admin name for this pricelist"),
   customerTag: z.string().nullable().optional().describe("Tag for this pricelist"),
   priceRules: z.array(PriceRuleResult).nullable().optional(),
   priority: z.number().nullable().optional().describe("The highest priority number is picked first if multiple discounts applicable"),
@@ -64,6 +65,7 @@ export const PriceListModelSchema = z.object({
   domain: PriceListResult.shape.domain,
   createdAt: PriceListResult.shape.createdAt,
   updatedAt: PriceListResult.shape.updatedAt,
+  name: PriceListResult.shape.name,
   customerTag: PriceListResult.shape.customerTag,
   priceRules: PriceListResult.shape.priceRules,
   priority: PriceListResult.shape.priority,
@@ -81,6 +83,7 @@ export const PriceListModel = {
       domain: entity.domain || "",
       ...entity.createdAt && { createdAt: new Date(entity.createdAt || new Date()) },
       ...entity.updatedAt && { updatedAt: new Date(entity.updatedAt || new Date()) },
+      name: entity.name || "",
       customerTag: entity.customerTag || "",
       priceRules: entity.priceRules || [],
       priority: entity.priority || 0,
