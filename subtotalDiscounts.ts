@@ -3,6 +3,7 @@ import { z } from "zod";
 import { OrganisationModel, OrganisationModelSchema, OrganisationResult } from './Organisation';
 
 export const SubtotalDiscountRuleResult = z.object({
+  id: z.string().nullable().optional().describe("A unique ID used for just managing rules"),
   requiredSubtotal: z.number().nullable().optional().describe("The required subtotal amount to activate this discount rule"),
   discountMethod: z.union([
     z.literal("FIXED"),
