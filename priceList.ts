@@ -3,6 +3,7 @@ import { z } from "zod";
 import { OrganisationModel, OrganisationModelSchema, OrganisationResult } from './Organisation';
 
 export const PriceRuleResult = z.object({
+  id: z.string().nullable().optional().describe("Each price rule needs a unique ID"),
   context: z.union([
     z.literal("STORE"),
     z.literal("PRODUCT"),
