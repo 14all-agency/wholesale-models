@@ -90,6 +90,11 @@ export const PriceListModelSchema = z.object({
   priceRules: PriceListResult.shape.priceRules,
   priority: PriceListResult.shape.priority,
   enabled: PriceListResult.shape.enabled,
+  markets: PriceListResult.shape.markets,
+  startDate: PriceListResult.shape.startDate,
+  endDate: PriceListResult.shape.endDate,
+  ruleSelectionMethod: PriceListResult.shape.ruleSelectionMethod,
+  calculationMethod: PriceListResult.shape.calculationMethod,
 });
 
 export type PriceListModel = z.infer<typeof PriceListModelSchema>;
@@ -108,6 +113,11 @@ export const PriceListModel = {
       priceRules: entity.priceRules || [],
       priority: entity.priority || 0,
       enabled: entity.enabled || false,
+      markets: entity.markets || [],
+      startDate: entity.startDate ? new Date(entity.startDate) : null,
+      endDate: entity.endDate ? new Date(entity.endDate) : null,
+      ruleSelectionMethod: entity.ruleSelectionMethod || "HIGHEST_DISCOUNT",
+      calculationMethod: entity.calculationMethod || "REGULAR_PRICE",
     };
     return PriceListModelSchema.parse(obj);
   },
