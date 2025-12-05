@@ -29,7 +29,7 @@ export const PriceRuleResult = z.object({
     z.literal("SAME_GROUP").describe("Requires products in this discount group (collection, products, etc) to meet  required subtotal/quantity condition"),
     z.literal("SAME_RULE").describe("Requires products in this discount rule (collection, products, etc) to meet  required subtotal/quantity condition"),
     z.literal("ANY").describe("Any product/variant"),
-  ]).describe("Describes how the required subtotal/quantity conditions will be determined"),
+  ]).nullable().optional().describe("Describes how the required subtotal/quantity conditions will be determined"),
 });
 
 export type PriceRule = z.infer<typeof PriceRuleResult>;
