@@ -52,6 +52,11 @@ export const PriceListInputResult = z.object({
     z.literal("REGULAR_PRICE").describe("Use the regular price"),
     z.literal("HIGHEST_PRICE").describe("Use the highest price between regular and compare price"),
   ]).nullable().optional().describe("Describes how percentage or fixed off will be calculated"),
+  marketMethod: z.union([
+    z.literal("MIXED").describe("Use the market price for PERCENTAGE and FIXED, use the base currency for SET_PRICE"),
+    z.literal("MARKET").describe("Always use the market price"),
+    z.literal("BASE").describe("Always use the base currency price"),
+  ]).nullable().optional().describe("Describes how we handle market pricing"),
 });
 
 export type PriceListInput = z.infer<typeof PriceListInputResult>;
@@ -96,6 +101,7 @@ export const PriceListModelSchema = z.object({
   endDate: PriceListResult.shape.endDate,
   ruleSelectionMethod: PriceListResult.shape.ruleSelectionMethod,
   calculationMethod: PriceListResult.shape.calculationMethod,
+  marketMethod: PriceListResult.shape.marketMethod,
 });
 
 export type PriceListModel = z.infer<typeof PriceListModelSchema>;
@@ -119,6 +125,7 @@ export const PriceListModel = {
       endDate: entity.endDate ? new Date(entity.endDate) : null,
       ruleSelectionMethod: entity.ruleSelectionMethod || "HIGHEST_DISCOUNT",
       calculationMethod: entity.calculationMethod || "REGULAR_PRICE",
+      marketMethod: entity.marketMethod || "MIXED",
     };
     return PriceListModelSchema.parse(obj);
   },
